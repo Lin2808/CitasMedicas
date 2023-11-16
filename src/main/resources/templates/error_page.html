@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<body>
+<h1>ERROR 404</h1>
+</body>
+</html>
+
+
+<header>
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+        <div class="position-sticky">
+            <div class="list-group list-group-flush mx-2 mt-4">
+
+
+                <div th:if="${#request.isUserInRole('ROLE_ADMIN')}">
+                    <!-- Este div se mostrará solo si el usuario tiene el rol "ADMIN" -->
+                    <a th:href="@{/api/usuarios}"
+                       class="list-group-item list-group-item-action py-2 ripple">
+                        <i class="fas fa-users-gear me-3"></i>
+                        <span>Usuarios</span>
+                    </a>
+                </div>
+
+                <a th:href="@{/api/pacientes}"
+                   class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-user-injured me-3"></i>
+                    <span>Pacientes</span>
+                </a>
+                <a th:href="@{/api/consultas}"
+                   class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-briefcase-medical me-3"></i>
+                    <span>Consultas Médicas</span>
+                </a>
+
+                <!-- Collapse 5 -->
+                <a th:href="@{/logout}" class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-sign-out-alt me-3"></i> <!-- Icono de cerrar sesión -->
+                    <span>Cerrar sesión</span>
+                </a>
+
+            </div>
+        </div>
+    </nav>
+    <!-- Sidebar -->
+    <!-- Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#sidebarMenu"
+                aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Brand -->
+        <a class="navbar-brand px-3" th:href="@{/index}">
+            <h4>Historias clínicas</h4>
+        </a>
+
+        <!-- Right links -->
+        <ul class="navbar-nav ms-auto d-flex flex-row">
+
+            <div th:if="${#request.userPrincipal != null}">
+                <li class="nav-item d-flex justify-content-center align-items-center my-1">
+                    <!--                    th:if="${#authorization.expression('isAuthenticated()')}">-->
+                    <span th:text="${#request.userPrincipal.name}"></span>
+                </li>
+            </div>
+
+            <!-- Avatar -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
+                   id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                    <img src="/img/perfil-del-usuario.png" th:src="@{/img/perfil-del-usuario.png}"
+                         class="rounded-circle" height="22" alt="Avatar" loading="lazy"/>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                    <li>
+                        <a class="dropdown-item" th:href="@{/api/usuarios/perfil}">
+                            <i class="fas fa-user"></i> Mi perfil <!-- Ícono de Mi perfil -->
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" th:href="@{/api/usuarios/cambiar-password}">
+                            <i class="fas fa-key"></i> Cambiar contraseña <!-- Ícono de cambio de contraseña -->
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <form id="logout-form" th:action="@{/logout}" method="post">
+                            <!-- Aquí puedes agregar cualquier otro campo o información que necesites -->
+                            <button class="dropdown-item" type="submit">
+                                <i class="fas fa-sign-out-alt"></i> Cerrar sesión <!-- Ícono de cerrar sesión -->
+                            </button>
+                        </form>
+                    </li>
+
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>

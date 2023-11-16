@@ -1,0 +1,256 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar usuario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.18.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" th:href="@{/css/header-sidebar.css}" href="/css/header-sidebar.css">
+</head>
+<body>
+<header>
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="collapse d-lg-block  sidebar collapse bg-white">
+        <div class="position-sticky">
+            <div class="list-group list-group-flush mx-2 mt-4">
+
+
+                <div th:if="${#request.isUserInRole('ROLE_ADMIN')}">
+                    <!-- Este div se mostrará solo si el usuario tiene el rol "ADMIN" -->
+                    <a th:href="@{/api/usuarios}"
+                       class="list-group-item list-group-item-action py-2 ripple">
+                        <i class="fas fa-users-gear me-3"></i>
+                        <span>Usuarios</span>
+                    </a>
+                </div>
+
+                <a th:href="@{/api/pacientes}"
+                   class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-user-injured me-3"></i>
+                    <span>Pacientes</span>
+                </a>
+                <a th:href="@{/api/consultas}"
+                   class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-briefcase-medical me-3"></i>
+                    <span>Consultas Médicas</span>
+                </a>
+
+                <!-- Collapse 5 -->
+                <a th:href="@{/logout}" class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-sign-out-alt me-3"></i> <!-- Icono de cerrar sesión -->
+                    <span>Cerrar sesión</span>
+                </a>
+
+            </div>
+        </div>
+    </nav>
+    <!-- Sidebar -->
+    <!-- Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#sidebarMenu"
+                aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Brand -->
+        <a class="navbar-brand px-3" th:href="@{/index}">
+            <h4>Historias clínicas</h4>
+        </a>
+
+        <!-- Right links -->
+        <ul class="navbar-nav ms-auto d-flex flex-row">
+
+            <div th:if="${#request.userPrincipal != null}">
+                <li class="nav-item d-flex justify-content-center align-items-center my-2">
+                    <!--                    th:if="${#authorization.expression('isAuthenticated()')}">-->
+                    <span th:text="${#request.userPrincipal.name}" class="text-light"></span>
+                </li>
+            </div>
+
+            <!-- Avatar -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
+                   id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                    <img src="/img/perfil-del-usuario.png" th:src="@{/img/usuario.png}"
+                         class="rounded-circle" height="30" alt="Avatar" loading="lazy"/>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                    <li>
+                        <a class="dropdown-item" th:href="@{/api/usuarios/perfil}">
+                            <i class="fas fa-user"></i> Mi perfil <!-- Ícono de Mi perfil -->
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" th:href="@{/api/usuarios/cambiar-password}">
+                            <i class="fas fa-key"></i> Cambiar contraseña <!-- Ícono de cambio de contraseña -->
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <form id="logout-form" th:action="@{/logout}" method="post">
+                            <!-- Aquí puedes agregar cualquier otro campo o información que necesites -->
+                            <button class="dropdown-item" type="submit">
+                                <i class="fas fa-sign-out-alt"></i> Cerrar sesión <!-- Ícono de cerrar sesión -->
+                            </button>
+                        </form>
+                    </li>
+
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main style="margin-top: 58px;">
+    <div class="container pt-4">
+        <div class="container pt-4">
+            <div class="container-lg">
+                <!--                <h4 class="mb-4">Administración de Pacientes</h4>-->
+                <fieldset>
+
+                    <!--                    <form method="post" th:action="@{/api/pacientes/update/{id}(id=${paciente.getId()})}" th:object="${paciente}">-->
+                    <form method="post" th:action="@{/api/usuarios/update}" th:object="${usuario}">
+
+                        <legend>Información del Usuario</legend>
+                        <!-- Name input -->
+                        <input type="hidden" id="id" class="form-control" name="id"
+                               th:value="${usuario.getId()}"/>
+
+
+                        <div class="row">
+                            <!-- Name input -->
+                            <div class="col-md-6">
+                                <div class="form-outline mb-4">
+                                    <input type="text" id="nombres" class="form-control" name="persona.nombres"
+                                           required th:value="${usuario.getPersona().getNombres()}"/>
+                                    <label class="form-label">Nombres</label>
+                                </div>
+                            </div>
+
+                            <!-- Last name input -->
+                            <div class="col-md-6">
+                                <div class="form-outline mb-4">
+                                    <input type="text" id="apellidos" class="form-control" name="persona.apellidos"
+                                           required th:value="${usuario.getPersona().getApellidos()}">
+                                    <label class="form-label">Apellidos</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <span>Fecha de nacimiento</span>
+                                <input type="date" id="fechaNacimiento" class="form-control"
+                                       name="persona.fechaNacimiento" required
+                                       th:value="${usuario.getPersona().getFechaNacimiento()}"
+                                       onchange="validarFecha()">
+                                <span id="errorFecha" style="color: red;"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <span>Rol de usuario</span>
+                                <select class="form-select" id="rol" name="rol" th:field="*{rol}" required>
+                                    <option value="ROLE_USER" th:selected="${usuario.rol == 'ROLE_USER'}">Usuario
+                                    </option>
+                                    <option value="ROLE_ADMIN" th:selected="${usuario.rol == 'ROLE_ADMIN'}">
+                                        Administrador
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-outline mb-4">
+                                    <input type="text" id="direccion" class="form-control" name="persona.direccion"
+                                           required th:value="${usuario.getPersona().getDireccion()}"/>
+                                    <label class="form-label">Dirección</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-outline mb-4">
+                                    <input type="text" id="telefono" class="form-control" name="persona.telefono"
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                           required maxlength="10" th:value="${usuario.getPersona().getTelefono()}"/>
+                                    <label class="form-label">Teléfono</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-outline mb-4">
+                                    <input type="text" id="username" class="form-control" name="username"
+                                           required maxlength="10" th:value="${usuario.getUsername()}"/>
+                                    <label class="form-label">Nombre de usuario</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-outline mb-4">
+                                    <select class="form-select" id="sexo" name="persona.sexo" required>
+                                        <option value="Femenino"
+                                                th:selected="${usuario.getPersona().getSexo() == 'Femenino'}">Femenino
+                                        </option>
+                                        <option value="Masculino"
+                                                th:selected="${usuario.getPersona().getSexo() == 'Masculino'}">Masculino
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <!-- Sería interesante que el botón Guardar redirija de una a la historia clínica -->
+                            <button type="submit" class="btn btn-success mt-3" id="save">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!--JS-->
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"
+        th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js}"></script>
+
+<!-- MDB -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
+        th:src="@{https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js}"></script>
+
+
+<!-- jQuery -->
+<script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"
+        src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables CSS (Bootstrap) -->
+<link th:href="@{https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css}" rel="stylesheet"
+      href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+
+<!-- DataTables JavaScript -->
+<script th:src="@{https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js}"
+        src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script th:src="@{https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js}"
+        src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+<script th:src="@{/js/myJs.js}"></script>
+</body>
+</html>
