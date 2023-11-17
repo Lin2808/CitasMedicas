@@ -147,7 +147,7 @@
                                                 th:text="${paciente.persona.apellidos}"></span></p>
                                         <p><strong>Sexo:</strong> <span th:text="${paciente.persona.sexo}"></span>
                                         </p>
-                                        <p><strong>Edad:</strong> <span th:text="${edad}"></span></p>
+                                        <p><strong>Fecha de nacimiento:</strong> <span th:text="${#dates.format(paciente.persona.fechaNacimiento, 'dd-MM-yyyy')}"></span></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -181,7 +181,7 @@
                         <table class="table table-striped">
                             <thead class="table-dark">
                             <tr>
-                                <th style="color: white;">Patología / Alergia</th>
+                                <th style="color: white;">Alergia</th>
                                 <th style="color: white;">Familiar</th>
                                 <th style="color: white;">Acciones</th>
                             </tr>

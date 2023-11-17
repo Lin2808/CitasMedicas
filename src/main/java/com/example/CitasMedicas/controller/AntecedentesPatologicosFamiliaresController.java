@@ -26,14 +26,38 @@ public class AntecedentesPatologicosFamiliaresController {
     public AntecedentesPatologicosFamiliaresController() {
     }
 
-    @PostMapping({"/save/{id}"})
+    /*@PostMapping({"/save/{id}"})
     public String guardarPaciente(@ModelAttribute("antecedentes") AntecedentesPatologicosFamiliares antecedentes, @PathVariable("id") Long id, RedirectAttributes attributes) {
         Optional<Paciente> pacienteOptional = this.pacienteRepository.findById(id);
         antecedentes.setPaciente((Paciente)pacienteOptional.get());
         this.antecedentesRepository.save(antecedentes);
         attributes.addAttribute("pacienteId", id);
         return "redirect:/api/historias_clinicas/nuevo";
+    }*/
+
+    @PostMapping({"/save/{id}"})
+    public String guardarPaciente(@ModelAttribute("antecedentes") AntecedentesPatologicosFamiliares antecedentes, @PathVariable("id") Long id, RedirectAttributes attributes) {
+        Optional<Paciente> pacienteOptional = this.pacienteRepository.findById(id);
+
+        if (pacienteOptional.isPresent()) {
+            // Crea una nueva instancia de AntecedentesPatologicosFamiliares
+            AntecedentesPatologicosFamiliares nuevoAntecedente = new AntecedentesPatologicosFamiliares();
+            nuevoAntecedente.setPaciente(pacienteOptional.get());
+            nuevoAntecedente.setPatologia(antecedentes.getPatologia());
+            nuevoAntecedente.setAlergias(antecedentes.getAlergias());
+            // Asigna otras propiedades según tus necesidades
+
+            // Guarda la nueva instancia en el repositorio
+            this.antecedentesRepository.save(nuevoAntecedente);
+
+            attributes.addAttribute("pacienteId", id);
+            return "redirect:/api/historias_clinicas/nuevo";
+        } else {
+            // Manejo de paciente no encontrado, por ejemplo, redirigir a una página de error
+            return "redirect:/error";
+        }
     }
+
 
     @GetMapping({"/update/{id}"})
     public String guardarPaciente(@PathVariable("id") Long id, RedirectAttributes attributes, Model model) {
