@@ -51,24 +51,19 @@ public class PacienteController {
 
     @PostMapping({"/save"})
     public String guardarPaciente(@ModelAttribute("paciente") Paciente paciente, RedirectAttributes attributes) {
-        if (this.personaRepository.existsByCedula(paciente.getPersona().getCedula())) {
-            attributes.addFlashAttribute("error", "Ya existe una persona con la misma cédula en la base de datos");
-        } else {
-            Persona persona = new Persona();
-            persona.setApellidos(paciente.getPersona().getApellidos());
-            persona.setNombres(paciente.getPersona().getNombres());
-            persona.setDireccion(paciente.getPersona().getDireccion());
-            persona.setSexo(paciente.getPersona().getSexo());
-            persona.setCedula(paciente.getPersona().getCedula());
-            persona.setTelefono(paciente.getPersona().getTelefono());
-            persona.setFechaNacimiento(paciente.getPersona().getFechaNacimiento());
-            this.personaRepository.save(persona);
-            paciente.setEstado(true);
-            paciente.setPersona(persona);
-            this.pacienteRepository.save(paciente);
-            attributes.addFlashAttribute("mensaje", "El paciente se ha registrado correctamente");
-        }
-
+        Persona persona = new Persona();
+        persona.setApellidos(paciente.getPersona().getApellidos());
+        persona.setNombres(paciente.getPersona().getNombres());
+        persona.setDireccion(paciente.getPersona().getDireccion());
+        persona.setSexo(paciente.getPersona().getSexo());
+        persona.setCedula(paciente.getPersona().getCedula());
+        persona.setTelefono(paciente.getPersona().getTelefono());
+        persona.setFechaNacimiento(paciente.getPersona().getFechaNacimiento());
+        this.personaRepository.save(persona);
+        paciente.setEstado(true);
+        paciente.setPersona(persona);
+        this.pacienteRepository.save(paciente);
+        attributes.addFlashAttribute("mensaje", "Paciente registrado correctamente");
         return "redirect:/api/consultas";
     }
 

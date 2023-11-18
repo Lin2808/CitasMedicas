@@ -63,19 +63,7 @@ public class UsuarioController {
         return "tu-pagina";
     }
 
-    @GetMapping({"/perfil"})
-    public String editarPerfil(Model model, Principal principal) {
-        String nombreUsuario = principal.getName();
-        Optional<Usuario> usuario = this.usuarioRepository.findByUsername(nombreUsuario);
-        if (usuario.isPresent()) {
-            model.addAttribute("usuarioT", usuario.get());
-            System.out.println(usuario);
-        } else {
-            model.addAttribute("usuario", (Object)null);
-        }
 
-        return "mi_perfil";
-    }
 
     @GetMapping({"/cambio_password"})
     public String cambioPassword() {

@@ -25,24 +25,6 @@
         <div class="position-sticky">
             <div class="list-group list-group-flush mx-2 mt-4">
 
-                <div th:if="${error != null}" class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Alerta!</strong>
-                    <p th:text="${error}"></p>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-
-                <div th:if="${param.mensaje != null}" class="alert alert-success alert-dismissible fade show"
-                     role="alert">
-                    <strong>Éxito!</strong>
-                    <p th:text="${param.mensaje}"></p>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                <div th:if="${mensaje != null}" class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Éxito!</strong>
-                    <p th:text="${mensaje}"></p>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-
                 <div th:if="${#request.isUserInRole('ROLE_ADMIN')}">
                     <!-- Este div se mostrará solo si el usuario tiene el rol "ADMIN" -->
                     <a th:href="@{/api/usuarios}"
@@ -104,12 +86,6 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                     <li>
-                        <a class="dropdown-item" th:href="@{/api/usuarios/perfil}">
-                            <i class="fas fa-user"></i> Mi perfil <!-- Ícono de Mi perfil -->
-                        </a>
-                    </li>
-
-                    <li>
                         <a class="dropdown-item" th:href="@{/api/usuarios/cambiar-password}">
                             <i class="fas fa-key"></i> Cambiar contraseña <!-- Ícono de cambio de contraseña -->
                         </a>
@@ -138,7 +114,23 @@
         <div class="container pt-4">
             <div class="container-lg">
                 <h4 class="mb-4"><i class="fas fa-stethoscope"></i> Nueva consulta médica</h4>
+                <div th:if="${error != null}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Alerta!</strong>
+                    <p th:text="${error}"></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
 
+                <div th:if="${param.mensaje != null}" class="alert alert-success alert-dismissible fade show"
+                     role="alert">
+                    <strong>Éxito!</strong>
+                    <p th:text="${param.mensaje}"></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div th:if="${mensaje != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Éxito!</strong>
+                    <p th:text="${mensaje}"></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
 <!--                    <div class="form-group" style="width: 60%;">-->
 <!--                        <form th:action="@{/api/pacientes/buscar}" method="post" class="form-inline">-->
@@ -239,7 +231,7 @@
                         <div class="col-md-6">
                             <div class="form-outline mb-4">
                                 <input type="text" id="cedula" class="form-control" maxlength="10" name="persona.cedula"
-                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')" required/>
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
                                 <label class="form-label">Cédula</label>
                             </div>
                         </div>
@@ -249,8 +241,7 @@
                         <!-- Address input -->
                         <div class="col-md-6">
                             <div class="form-outline mb-4">
-                                <input type="text" id="direccion" class="form-control" name="persona.direccion"
-                                       required/>
+                                <input type="text" id="direccion" class="form-control" name="persona.direccion"/>
                                 <label class="form-label">Dirección</label>
                             </div>
                         </div>
@@ -259,8 +250,7 @@
                         <div class="col-md-6">
                             <div class="form-outline mb-4">
                                 <input type="text" id="telefono" class="form-control" name="persona.telefono"
-                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')" required
-                                       maxlength="10"/>
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="10"/>
                                 <label class="form-label">Teléfono</label>
                             </div>
                         </div>

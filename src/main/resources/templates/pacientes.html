@@ -87,12 +87,6 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                     <li>
-                        <a class="dropdown-item" th:href="@{/api/usuarios/perfil}">
-                            <i class="fas fa-user"></i> Mi perfil <!-- Ícono de Mi perfil -->
-                        </a>
-                    </li>
-
-                    <li>
                         <a class="dropdown-item" th:href="@{/api/usuarios/cambiar-password}">
                             <i class="fas fa-key"></i> Cambiar contraseña <!-- Ícono de cambio de contraseña -->
                         </a>
@@ -246,7 +240,7 @@
                         <div class="col-md-6">
                             <div class="form-outline mb-4">
                                 <input type="text" id="cedula" class="form-control" maxlength="10" name="persona.cedula"
-                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')" required/>
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
                                 <label class="form-label">Cédula</label>
                             </div>
                         </div>
@@ -256,8 +250,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-outline mb-4">
-                                <input type="text" id="direccion" class="form-control" name="persona.direccion"
-                                       required/>
+                                <input type="text" id="direccion" class="form-control" name="persona.direccion"/>
                                 <label class="form-label">Dirección</label>
                             </div>
                         </div>
@@ -265,7 +258,7 @@
                         <!-- Teléfono input -->
                         <div class="col-md-6">
                             <div class="form-outline mb-4">
-                                <input type="text" id="telefono" class="form-control" name="persona.telefono" required
+                                <input type="text" id="telefono" class="form-control" name="persona.telefono"
                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="10"/>
                                 <label class="form-label">Teléfono</label>
                             </div>
