@@ -122,11 +122,6 @@ public class PacienteController {
         if (optionalPacienteExistente.isPresent()) {
             Paciente pacienteExistente = (Paciente)optionalPacienteExistente.get();
             if (!paciente.getPersona().getCedula().equals(pacienteExistente.getPersona().getCedula())) {
-                if (this.personaRepository.existsByCedula(paciente.getPersona().getCedula())) {
-                    attributes.addFlashAttribute("error", "Ya existe otro paciente con el mismo número de cédula");
-                    return "redirect:/api/pacientes";
-                }
-
                 pacienteExistente.getPersona().setCedula(paciente.getPersona().getCedula());
             }
 
