@@ -154,32 +154,33 @@
 
                 <hr>
                 <div class="container-lg" data-page-size="5" data-entries-options="[5, 10, 15]">
-                    <table class="table table-responsive table-sm table-striped table-pagination" id="tbPersonas" style="width: 100%;">
-                        <thead class="table-dark">
-                        <tr>
-                            <th>Paciente</th>
-                            <th>Cédula</th>
-                            <th>Sexo</th>
-                            <th>Antecedentes</th>
-                            <th class="text-center" style="width: 100px;">Acción</th> <!-- Añadido 'text-center' para centrar el encabezado -->
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="paciente : ${pacientes}">
-                            <td th:text="${paciente.persona.getApellidos() + ' ' + paciente.persona.getNombres()}"></td>
-                            <td th:text="${paciente.persona.cedula}"></td>
-                            <td th:text="${paciente.persona.getSexo()}"></td>
-                            <td th:text="${paciente.getAntecedentesPersonales()}"></td>
-                            <td> <!-- Añadido 'text-center' para centrar los botones -->
-                                <a th:href="@{/api/historias_clinicas/nuevo(pacienteId=${paciente.id})}"
-                                   class="btn btn-sm btn-success">
-                                    <i class="fas fa-plus-circle"></i> Consulta
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
+                    <div class="table-responsive">
+                        <table class="table table-responsive table-sm table-striped table-pagination" id="tbPersonas" style="width: 100%;">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>Paciente</th>
+                                <th>Cédula</th>
+                                <th>Sexo</th>
+                                <th>Antecedentes</th>
+                                <th class="text-center" style="width: 100px;">Acción</th> <!-- Añadido 'text-center' para centrar el encabezado -->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="paciente : ${pacientes}">
+                                <td th:text="${paciente.persona.getApellidos() + ' ' + paciente.persona.getNombres()}"></td>
+                                <td th:text="${paciente.persona.cedula}"></td>
+                                <td th:text="${paciente.persona.getSexo()}"></td>
+                                <td th:text="${paciente.getAntecedentesPersonales()}"></td>
+                                <td> <!-- Añadido 'text-center' para centrar los botones -->
+                                    <a th:href="@{/api/historias_clinicas/nuevo(pacienteId=${paciente.id})}"
+                                       class="btn btn-sm btn-success">
+                                        <i class="fas fa-plus-circle"></i> Consulta
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
