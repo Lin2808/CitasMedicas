@@ -189,7 +189,7 @@
                             <tbody>
                             <!-- Utilizamos th:each para iterar sobre la lista de antecedentes -->
                             <tr th:each="antecedente : ${antecedentes}">
-                                <td th:text="${antecedente.patologia}">Patología / Alergia</td>
+                                <td th:text="${antecedente.patologia}">Alergia</td>
                                 <td th:text="${antecedente.alergias}">Familiar</td>
                                 <td>
                                     <!-- Botón de Editar con icono -->
@@ -213,7 +213,7 @@
 
                 <div class="card mb-3">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="card-title"><i class="fas fa-stethoscope"></i> Consultas realizadas</h5>
+                        <h5 class="card-title"><i class="fas fa-stethoscope"></i>Consultas realizadas</h5>
                     </div>
 
                     <div class="card-body">
@@ -248,27 +248,40 @@
                                                 <p><strong>Presión:</strong> <span
                                                         th:text="${consulta.presion}"></span>
                                                 </p>
-                                                <p><strong>Diagnóstico:</strong> <span
-                                                        th:text="${consulta.diagnostico}"></span></p>
-                                                <p><strong>Tratamiento:</strong> <span
-                                                        th:text="${consulta.tratamiento}"></span></p>
+                                                <p><strong>Glucosa:</strong> <span th:text="${consulta.alergias}"></span>
+                                                </p>
+
                                             </div>
                                         </div>
                                         <hr>
-                                        <p><strong>Glucosa:</strong> <span th:text="${consulta.alergias}"></span>
-                                        </p>
+                                        <p><strong>Diagnóstico:</strong> <span
+                                                th:text="${consulta.diagnostico}"></span></p>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong>Tratamiento:</strong> <span
+                                                        th:text="${consulta.tratamiento}"></span></p>
+                                            </div>
+
+
+
+                                            <input type="hidden" class="form-control" name="consultaId" th:value="${consulta.id}" />
+
+
+
+
+
+                                            <div class="col-md-6 ml-auto">
+                                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarCamposModal"
+                                                        th:attr="onclick='cargarDatosModal(\'' + (${consulta.diagnostico} ? ${consulta.diagnostico} : '') + '\', \'' + (${consulta.tratamiento} ? ${consulta.tratamiento} : '') + '\', \'' + (${consulta.comentario} ? ${consulta.comentario} : '') + '\', \'' + (${consulta.id} ? ${consulta.id} : '') + '\')'">
+                                                    <i class="fas fa-edit"></i> Editar datos
+                                                </button>
+
+
+                                            </div>
+                                        </div>
                                         <p><strong>Comentario:</strong> <span
                                                 th:text="${consulta.comentario}"></span>
                                         </p>
-
-
-                                        <!--                                        <div class="col-md-6">-->
-                                        <!--                                            <a th:href="@{'/api/historias_clinicas/examen/' + ${consulta.id}}" target="_blank" class="btn btn-info">-->
-                                        <!--                                                <i class="fas fa-eye"></i> Ver examen-->
-                                        <!--                                            </a>-->
-
-                                        <!--
-                                                                               </div>-->
                                         <hr>
                                         <div class="col-md-6" th:if="${consulta.examen != null}">
                                             <a th:href="@{'/api/historias_clinicas/examen/' + ${consulta.id}}"
@@ -276,7 +289,6 @@
                                                 <i class="fas fa-eye"></i> Ver examen
                                             </a>
                                         </div>
-
                                     </div>
                                 </div>
 
@@ -290,26 +302,16 @@
                 <div class="card mb-2">
                     <div class="card-header bg-success text-white">
                         <h5 class="card-title">
-                            <!--                            <i class="fas fa-stethoscope"></i>-->
-                            <i class="fas fa-calendar-plus"></i>
-                            Nueva consulta
+                            <i class="fas fa-calendar-plus"></i> Nueva consulta
                         </h5>
-
                     </div>
                     <div class="card-body">
-                        <form method="post" th:action="@{/api/historias_clinicas/save}" th:object="${consulta}"
-                              enctype="multipart/form-data">
-                            <!--                        <form method="post" th:action="@{/api/historias_clinicas/save}" th:object="${consulta}"-->
-                            <!--                            class="container" enctype="multipart/form-data">-->
+                        <form method="post" th:action="@{/api/historias_clinicas/save}" th:object="${consulta}" enctype="multipart/form-data">
                             <div class="row">
                                 <!-- Temperature input -->
                                 <div class="col-md-6">
                                     <div class="form-outline mb-4">
-                                        <input type="text" id="temperatura" class="form-control"
-                                               name="temperatura"
-                                               oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
-
-                                        />
+                                        <input type="text" id="temperatura" class="form-control" name="temperatura" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
                                         <label class="form-label">Temperatura (°C)</label>
                                     </div>
                                 </div>
@@ -317,9 +319,7 @@
                                 <!-- Weight input -->
                                 <div class="col-md-6">
                                     <div class="form-outline mb-4">
-                                        <input type="text" id="peso" class="form-control" name="peso"
-                                               oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
-                                               />
+                                        <input type="text" id="peso" class="form-control" name="peso" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
                                         <label class="form-label">Peso <span title="kilogramos">(kg)</span></label>
                                     </div>
                                 </div>
@@ -328,10 +328,7 @@
                                 <!-- Size input -->
                                 <div class="col-md-6">
                                     <div class="form-outline mb-4">
-                                        <input type="text" id="talla" class="form-control" name="talla"
-
-                                               oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
-                                        />
+                                        <input type="text" id="talla" class="form-control" name="talla" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
                                         <label class="form-label">Estatura <span title="centímetros">(cm)</span></label>
                                     </div>
                                 </div>
@@ -339,78 +336,51 @@
                                 <!-- Pressure input -->
                                 <div class="col-md-6">
                                     <div class="form-outline mb-4">
-                                        <input id="presion" type="text" class="form-control" name="presion"
-                                               oninput="this.value = this.value.replace(/[^0-9./]/g, '')"
-                                               />
+                                        <input id="presion" type="text" class="form-control" name="presion" oninput="this.value = this.value.replace(/[^0-9./]/g, '')" />
                                         <label class="form-label">Presión Arterial</label>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="row">
                                 <!-- Personal Allergy input -->
                                 <div class="col-md-6">
                                     <div class="form-outline mb-4">
-                                        <input type="text" id="alergias" name="alergias"
-                                               class="form-control"
-                                               oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
-                                        />
+                                        <input type="text" id="alergias" name="alergias" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
                                         <label class="form-label">Glucosa (mg/dl)</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <!-- Diagnosis input -->
+                                    <!-- Comment input -->
                                     <div class="form-outline mb-4">
-                                        <textarea class="form-control" id="diagnostico"  name="diagnostico"
-                                                  rows="8"
-                                        ></textarea>
-                                        <label class="form-label">Diagnóstico</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row ">
-                                <div class="col-md-12">
-                                    <div class="form-outline mb-4">
-                                    <textarea class="form-control" required id="tratamiento" name="tratamiento" rows="8"
-                                    ></textarea>
-                                        <label class="form-label">Tratamiento</label>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="row ">
-                                <div class="col-md-12">
-                                    <div class="form-outline mb-4">
-                                        <input id="comentario" type="text" class="form-control"
-                                               name="comentario"
-                                        />
+                                        <input id="comentario" type="text" class="form-control" name="comentario" />
                                         <label class="form-label">Comentario</label>
                                     </div>
                                 </div>
                             </div>
-
-                            <!--EXAMENES-->
+                            <!-- EXAMENES -->
                             <div class="card-header">
                                 <h5>Subir examen</h5>
                             </div>
                             <div class="mb-3">
                                 <input type="file" name="file" class="form-control" accept="application/pdf">
                             </div>
-                            <div class="card-footer ">
+
+                            <!-- Botón de guardar -->
+                            <div class="card-footer">
                                 <div style="margin-bottom: 10px">
                                     <button type="submit" class="btn btn-success mt-3">
                                         <i class="fas fa-save"></i> Guardar <!-- Ícono de guardar -->
                                     </button>
-
                                 </div>
                             </div>
                         </form>
-                    </div> <!--    CARD BODY NUEVA CONSULTA   -->
+                    </div> <!-- CARD BODY NUEVA CONSULTA -->
                 </div>
+
+
+
             </div> <!--    CARD BODY HISTORIA CLÍNICA   -->
         </div> <!--    CARD HISTORIA CLÍNICA            -->
     </div> <!--CONTAINER-->
@@ -456,7 +426,7 @@
                 <form id="formularioAntecedente" method="post"
                       th:action="@{/api/antecedentes/save/{id}(id=${paciente.getId()})}" th:object="${antecedentes}">
                     <div class="mb-3">
-                        <label for="patologias" class="form-label">Patología / Alergia</label>
+                        <label for="patologias" class="form-label">Alergia</label>
                         <input type="text" class="form-control" id="patologias" name="patologia"
                                 required>
                     </div>
@@ -478,12 +448,56 @@
     </div>
 </div>
 
+<!--Modal para editar campos de Diagnóstico, Tratamiento, Comentario-->
+<div class="modal fade" id="editarCamposModal" tabindex="-1" aria-labelledby="editarCamposModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarCamposModalLabel">Editar campos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulario para registrar un nuevo antecedente -->
+                <form id="formularioCampos" method="post" th:action="@{/api/historias_clinicas/actualizarConsulta}" th:object="${consulta}">
+                    <div class="mb-3">
+                        <label class="form-label">Diagnóstico</label>
+                        <input type="text" class="form-control" id="diagnostico" name="diagnostico">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tratamiento</label>
+                        <input type="text" class="form-control" id="tratamiento" name="tratamiento">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Comentario</label>
+                        <input type="text" class="form-control" id="comentarioedit" name="comentarioedit">
+                        <input type="hidden" class="form-control" id="consultaIdEdit" name="consultaIdEdit"/>
+
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <div class="fixed-bottom text-text-right mb-4 ml-4">
     <a href="#bottom" class="btn btn-primary btn-floating" title="Ir al final de la página">
         <i class="fas fa-chevron-down"></i>
     </a>
 </div>
+
+<script src="/js/historia_clinica.js"></script>
+
+
 
 <!--JS-->
 <!-- Bootstrap -->

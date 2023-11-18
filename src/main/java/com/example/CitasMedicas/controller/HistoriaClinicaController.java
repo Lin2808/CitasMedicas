@@ -128,4 +128,36 @@ public class HistoriaClinicaController {
         }
 
     }
+
+
+
+
+    //Editar Diagnóstico, Tratamiento y Comentario
+    @PostMapping("/actualizarConsulta")
+    public String actualizarConsulta(@RequestParam("consultaIdEdit") Long consultaIdEdit,
+                                     @RequestParam("diagnostico") String diagnostico,
+                                     @RequestParam("tratamiento") String tratamiento,
+                                     @RequestParam("comentarioedit") String comentarioedit,
+                                     HttpSession session)
+    {
+        Consulta consulta = consultaRepository.findById(consultaIdEdit)
+                .orElseThrow(() -> new IllegalArgumentException("Consulta no encontrada con ID: " + consultaIdEdit));
+
+        // Actualiza los campos en la consulta
+        consulta.setDiagnostico(diagnostico);
+        consulta.setTratamiento(tratamiento);
+        consulta.setComentario(comentarioedit);
+
+        // Guarda la consulta actualizada
+        consultaRepository.save(consulta);
+
+        // Redirige a la página de la historia clínica
+        return "redirect:/api/historias_clinicas/nuevo?pacienteId=" + this.id;
+    }
+
+
+
+
+
+
 }
