@@ -1,5 +1,6 @@
 // Seleccionar el modal por su ID y almacenarlo en una variable
 var miModal = new bootstrap.Modal(document.getElementById('editarCamposModal'));
+var miModal2 = new bootstrap.Modal(document.getElementById('modalExamen'));
 
 // Función para cargar datos en el modal y mostrarlo
 function cargarDatosModal(diagnostico, tratamiento, comentario, consultaIdEdit) {
@@ -40,11 +41,6 @@ document.getElementById('guardarBtn').addEventListener('click', function () {
     var tratamiento = document.getElementById('tratamiento').value;
     var comentario = document.getElementById('comentarioedit').value;
 
-    console.log(consultaId);
-    console.log(diagnostico);
-    console.log(tratamiento);
-    console.log(comentario);
-
     // Crear un objeto FormData y agregar los datos
     var formData = new FormData();
     formData.append('consultaId', consultaId);
@@ -70,3 +66,41 @@ document.getElementById('guardarBtn').addEventListener('click', function () {
     // Enviar la solicitud con el objeto FormData
     xhr.send(formData);
 });
+
+function cargarArchivoModal(consultaId) {
+    var consultaIdInput = document.getElementById('consultaIdSubirExamen');
+    consultaIdInput.value = consultaId || '';
+    miModal2.show();
+}
+
+miModal2.addEventListener('hide.bs.modal', function () {
+    var consultaIdInput = document.getElementById('consultaIdSubirExamen');
+    consultaIdInput.value = '';
+});
+
+var miModal2 = new bootstrap.Modal(document.getElementById('modalExamen'));
+
+document.getElementById('subirExamen').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    var consultaId = document.getElementById('consultaIdSubirExamen').value;
+    var fileInput = document.getElementById('file');
+
+    var formData = new FormData();
+    formData.append('consultaId', consultaId);
+    formData.append('file', fileInput.files[0]);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/historias_clinicas/subirExamen', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                window.location.reload();
+            } else {
+                console.error('Error en la solicitud AJAX:', xhr.statusText);
+            }
+        }
+    };
+    xhr.send(formData);
+});
+

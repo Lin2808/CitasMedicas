@@ -16,14 +16,10 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
@@ -58,7 +54,7 @@ public class HistoriaClinicaController {
             System.out.println(consulta);
             List<AntecedentesPatologicosFamiliares> antecedentes = this.antecedentesRepository.findByPaciente_Id(paciente.getId());
             model.addAttribute("antecedentes", antecedentes);
-            List<Consulta> consultas = this.consultaRepository.findByPaciente_Id(paciente.getId());
+            List<Consulta> consultas = this.consultaRepository.findByPaciente_Id(paciente.getId(), Sort.by(Sort.Direction.ASC, "fechRegistro"));
             model.addAttribute("consultas", consultas);
             return "historia_clinica";
         } else {
@@ -86,24 +82,6 @@ public class HistoriaClinicaController {
         System.out.println(Arrays.toString(consulta.getExamen()));
         return "historia_clinica";
     }
-
-    @PostMapping({"/uploadd"})
-    public String uploadd(@RequestParam("examen") MultipartFile examen, HttpSession session) throws IOException {
-        Consulta consultaT = (Consulta)session.getAttribute("consultaT");
-        if (consultaT == null) {
-            consultaT = new Consulta();
-        }
-
-        if (examen != null && !examen.isEmpty()) {
-            byte[] contenidoExamen = examen.getBytes();
-            consultaT.setExamen(contenidoExamen);
-        }
-
-        session.setAttribute("consultaT", consultaT);
-        System.out.println(Arrays.toString(consultaT.getExamen()));
-        return "historia_clinica";
-    }
-
     @PostMapping({"/save"})
     public String saveConsulta(@ModelAttribute("consulta") Consulta consulta, RedirectAttributesModelMap modelMap, RedirectAttributes attributes, @RequestParam("file") MultipartFile file) throws IOException {
         if (file != null && !file.isEmpty()) {
@@ -129,9 +107,6 @@ public class HistoriaClinicaController {
 
     }
 
-
-
-
     //Editar Diagnóstico, Tratamiento y Comentario
     @PostMapping("/actualizarConsulta")
     public String actualizarConsulta(@RequestParam("consultaIdEdit") Long consultaIdEdit,
@@ -156,8 +131,19 @@ public class HistoriaClinicaController {
     }
 
 
+    @PostMapping("/subirExamen")
+    public String subirExamen(@RequestParam("consultaIdEdit") Long consultaIdEdit, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+        Consulta consulta = consultaRepository.findById(consultaIdEdit).orElseThrow(() -> new IllegalArgumentException("Consulta no encontrada con ID: " + consultaIdEdit));
 
+        //Actualizo el archivo
+        consulta.setExamen(file.getBytes());
 
+        // Guarda la consulta actualizada
+        consultaRepository.save(consulta);
+
+        // Redirige a la página de la historia clínica
+        return "redirect:/api/historias_clinicas/nuevo?pacienteId=" + this.id;
+    }
 
 
 }
