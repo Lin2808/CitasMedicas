@@ -260,8 +260,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <div class="form-outline mb-2">
-                                <input type="text" id="direccion" class="form-control" name="persona.direccion"
-                                       required/>
+                                <input type="text" id="direccion" class="form-control" name="persona.direccion"/>
                                 <label class="form-label">Dirección</label>
                             </div>
                         </div>
@@ -270,7 +269,7 @@
                         <div class="col-md-6">
                             <div class="form-outline mb-2">
                                 <input type="text" id="telefono"
-                                       class="form-control" name="persona.telefono" required
+                                       class="form-control" name="persona.telefono"
                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="10"/>
                                 <label class="form-label">Teléfono</label>
                             </div>
@@ -292,14 +291,14 @@
                         <div class="col-md-4">
                             <div class="form-outline mb-4">
                                 <input type="text" id="username" class="form-control"
-                                       name="username" maxlength="10"/>
+                                       name="username" maxlength="10" required/>
                                 <label class="form-label">Nombre de usuario</label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-outline mb-4">
                                 <input type="password" id="password" class="form-control"
-                                       name="password" maxlength="10"/>
+                                       name="password" maxlength="10" required/>
                                 <label class="form-label">Contraseña</label>
                             </div>
                         </div>

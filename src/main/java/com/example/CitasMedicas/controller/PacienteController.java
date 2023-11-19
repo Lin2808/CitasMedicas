@@ -181,14 +181,20 @@ public class PacienteController {
     public String eliminarPaciente(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<Paciente> pacienteOptional = this.pacienteRepository.findById(id);
         if (pacienteOptional.isPresent()) {
-            Paciente paciente = (Paciente)pacienteOptional.get();
+            Paciente paciente = pacienteOptional.get();
             if (this.tieneRelacionesConOtrasEntidades(paciente)) {
-                redirectAttributes.addFlashAttribute("error", "No se puede eliminar el paciente debido a tiene registrado consultas previas.");
+                redirectAttributes.addFlashAttribute("error", "No se puede eliminar el paciente debido a que tiene consultas médicas registradas.");
             } else if (this.tieneRelacionesConOtrasEntidades2(paciente)) {
-                redirectAttributes.addFlashAttribute("error", "No se puede eliminar el paciente debido a tiene antecedentes patológicos registrados.");
+                redirectAttributes.addFlashAttribute("error", "No se puede eliminar el paciente debido a que tiene antecedentes patológicos registrados.");
             } else {
+                // Antes de eliminar el paciente, obtenemos la persona asociada
+                Persona persona = paciente.getPersona();
+                // Luego eliminamos el paciente
                 this.pacienteRepository.deleteById(id);
-                redirectAttributes.addAttribute("mensaje", "El paciente se ha eliminado correctamente");
+                // Finalmente, eliminamos la persona asociada
+                this.personaRepository.deleteById(persona.getId());
+
+                redirectAttributes.addFlashAttribute("mensaje", "El paciente se ha eliminado correctamente");
             }
         } else {
             redirectAttributes.addFlashAttribute("error", "Paciente no encontrado.");
@@ -196,6 +202,7 @@ public class PacienteController {
 
         return "redirect:/api/pacientes";
     }
+
 
     private boolean tieneRelacionesConOtrasEntidades(Paciente paciente) {
         List<Consulta> consultas = this.consultaRepository.findByPaciente(paciente);

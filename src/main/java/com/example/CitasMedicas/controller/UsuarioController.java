@@ -189,15 +189,23 @@ public class UsuarioController {
     public String eliminarUsuario(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<Usuario> usuarioOptional = this.usuarioRepository.findById(id);
         if (usuarioOptional.isPresent()) {
-            Usuario usuario = (Usuario)usuarioOptional.get();
+            Usuario usuario = usuarioOptional.get();
             this.usuarioRepository.deleteById(id);
+
+            // Eliminar la entrada correspondiente en la tabla Persona
+            Persona persona = usuario.getPersona();
+            if (persona != null) {
+                this.personaRepository.delete(persona);
+            }
+
             redirectAttributes.addFlashAttribute("mensaje", "El usuario se ha eliminado correctamente");
         } else {
-            redirectAttributes.addFlashAttribute("error", "Paciente no encontrado.");
+            redirectAttributes.addFlashAttribute("error", "Usuario no encontrado.");
         }
 
         return "redirect:/api/usuarios";
     }
+
 
     @GetMapping({"/cambiar-password"})
     public String mostrarFormularioCambioContrasena() {
