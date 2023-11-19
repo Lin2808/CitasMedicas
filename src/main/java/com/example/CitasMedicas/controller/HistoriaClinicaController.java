@@ -132,7 +132,7 @@ public class HistoriaClinicaController {
 
 
     @PostMapping("/subirExamen")
-    public String subirExamen(@RequestParam("consultaIdEdit") Long consultaIdEdit, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+    public String subirExamen(@RequestParam("consultaIdEdit") Long consultaIdEdit, @RequestParam("fileExamen") MultipartFile file, HttpSession session) throws IOException {
         Consulta consulta = consultaRepository.findById(consultaIdEdit).orElseThrow(() -> new IllegalArgumentException("Consulta no encontrada con ID: " + consultaIdEdit));
 
         //Actualizo el archivo

@@ -78,17 +78,15 @@ miModal2.addEventListener('hide.bs.modal', function () {
     consultaIdInput.value = '';
 });
 
-var miModal2 = new bootstrap.Modal(document.getElementById('modalExamen'));
-
 document.getElementById('subirExamen').addEventListener('submit', function (event) {
     event.preventDefault();
 
     var consultaId = document.getElementById('consultaIdSubirExamen').value;
-    var fileInput = document.getElementById('file');
+    var fileInput = document.getElementById('fileExamen');
 
     var formData = new FormData();
     formData.append('consultaId', consultaId);
-    formData.append('file', fileInput.files[0]);
+    formData.append('fileExamen', fileInput.files[0]);
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/api/historias_clinicas/subirExamen', true);
@@ -103,4 +101,24 @@ document.getElementById('subirExamen').addEventListener('submit', function (even
     };
     xhr.send(formData);
 });
+
+function validarTamanioArchivo(inputId) {
+    // Obtener el tamaño máximo permitido (5 MB)
+    var maxSize = 5 * 1024 * 1024;
+
+    // Obtener el elemento de entrada de archivo
+    var fileInput = document.getElementById(inputId);
+
+    // Verificar si se seleccionó un archivo
+    if (fileInput.files.length > 0) {
+        var fileSize = fileInput.files[0].size;
+
+        // Verificar el tamaño del archivo
+        if (fileSize > maxSize) {
+            alert('El tamaño del archivo no debe exceder los 5 MB.');
+            // Limpiar el valor del campo de archivo si es demasiado grande
+            fileInput.value = '';
+        }
+    }
+}
 

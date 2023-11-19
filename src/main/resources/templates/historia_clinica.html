@@ -365,7 +365,7 @@
                                 <h5>Subir examen</h5>
                             </div>
                             <div class="mb-3">
-                                <input type="file" name="file" class="form-control" accept="application/pdf">
+                                <input type="file" id="file" name="file" class="form-control" accept="application/pdf" onchange="validarTamanioArchivo('file')">
                             </div>
 
                             <!-- Botón de guardar -->
@@ -388,30 +388,6 @@
 
 </main>
 
-<div class="modal fade" id="mlSubirArchivo" tabindex="-1" aria-labelledby="mlSubirArchivoLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mlSubirArchivoLabel">Seleccione un archivo</h5>
-                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="frmArchivo" action="/api/historias_clinicas/uploadd" method="post"
-                      enctype="multipart/form-data">
-                    <div class="row">
-                        <!-- File upload input -->
-                        <label class="form-label" for="customFile">Seleccione un examen en formato pdf</label>
-                        <input type="file" class="form-control" name="examen" id="customFile" accept=".pdf"/>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!--Modal patologias-->
 <div class="modal fade" id="nuevoAntecedenteModal" tabindex="-1" aria-labelledby="nuevoAntecedenteModalLabel"
@@ -499,7 +475,7 @@
                 <!-- Formulario para registrar un nuevo antecedente -->
                 <form id="subirExamen" method="post" th:action="@{/api/historias_clinicas/subirExamen}" th:object="${consulta}" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <input type="file" id="file" name="file" class="form-control" accept="application/pdf" required>
+                        <input type="file" id="fileExamen" name="fileExamen" class="form-control" accept="application/pdf" onchange="validarTamanioArchivo('fileExamen')" required>
                         <input type="hidden" class="form-control" id="consultaIdSubirExamen" name="consultaIdEdit"/>
                     </div>
 
