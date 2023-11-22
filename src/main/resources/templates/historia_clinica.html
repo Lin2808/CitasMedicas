@@ -239,21 +239,23 @@
                                                 </p>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><strong>Presión:</strong> <span
-                                                        th:text="${consulta.presion}"></span>
+                                                <p><strong>Presión:</strong> <span th:text="${consulta.presion}"></span>
                                                 </p>
                                                 <p><strong>Glucosa:</strong> <span th:text="${consulta.alergias}"></span>
                                                 </p>
-
                                             </div>
                                         </div>
                                         <hr>
-                                        <p><strong>Diagnóstico:</strong> <span
-                                                th:text="${consulta.diagnostico}"></span></p>
+
                                         <div class="row">
                                             <div class="col-md-6">
+                                                <p><strong>Diagnóstico:</strong> <span
+                                                        th:text="${consulta.diagnostico}"></span></p>
                                                 <p><strong>Tratamiento:</strong> <span
                                                         th:text="${consulta.tratamiento}"></span></p>
+                                                <p><strong>Comentario:</strong> <span
+                                                        th:text="${consulta.comentario}"></span>
+                                                </p>
                                             </div>
                                             <input type="hidden" class="form-control" id="consultaId" name="consultaId" th:value="${consulta.id}" />
                                             <div class="col-md-6 ml-auto">
@@ -261,13 +263,9 @@
                                                         th:attr="onclick='cargarDatosModal(\'' + (${consulta.diagnostico} ? ${consulta.diagnostico} : '') + '\', \'' + (${consulta.tratamiento} ? ${consulta.tratamiento} : '') + '\', \'' + (${consulta.comentario} ? ${consulta.comentario} : '') + '\', \'' + (${consulta.id} ? ${consulta.id} : '') + '\')'">
                                                     <i class="fas fa-edit"></i> Editar datos
                                                 </button>
-
-
                                             </div>
                                         </div>
-                                        <p><strong>Comentario:</strong> <span
-                                                th:text="${consulta.comentario}"></span>
-                                        </p>
+
                                         <hr>
                                             <div class="col-md-6" th:if="${consulta.examen != null}">
                                                 <div class="btn-group">
@@ -286,7 +284,6 @@
                                                         th:attr="onclick='cargarArchivoModal(\'' + (${consulta.id} ? ${consulta.id} : '') + '\')'">
                                                     Subir examen
                                                 </button>
-
                                             </div>
 
 
@@ -307,7 +304,7 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <form method="post" th:action="@{/api/historias_clinicas/save}" th:object="${consulta}" enctype="multipart/form-data">
+                        <form method="post" th:action="@{/api/historias_clinicas/save}" th:object="${consulta}" enctype="multipart/form-data" id="consulta">
                             <div class="row">
                                 <!-- Temperature input -->
                                 <div class="col-md-6">
@@ -371,7 +368,7 @@
                             <!-- Botón de guardar -->
                             <div class="card-footer">
                                 <div style="margin-bottom: 10px">
-                                    <button type="submit" class="btn btn-success mt-3">
+                                    <button type="submit" class="btn btn-success mt-3" id="guardarConsulta">
                                         <i class="fas fa-save"></i> Guardar <!-- Ícono de guardar -->
                                     </button>
                                 </div>
